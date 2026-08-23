@@ -4,59 +4,80 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Onyra Neurotech</title>
-<meta name="description" content="Onyra Neurotech — instruments for the interface of mind and machine. Site under construction." />
+<meta name="description" content="Onyra Neurotech — instruments for the interface of mind and machine. Technical preview." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #10131a;
-    --bg-soft: #161b25;
-    --fg: #edefe8;
-    --muted: #7c8598;
-    --line: rgba(237,239,232,0.08);
-    --teal: #6eead0;
-    --violet: #a99bff;
-    --focus: #eef0e9;
+    --charcoal: #1c1917;
+    --charcoal-soft: #242019;
+    --paper: #f3ede0;
+    --paper-dim: rgba(243,237,224,0.62);
+    --paper-faint: rgba(243,237,224,0.14);
+    --orange: #ff5a1f;
+    --orange-dim: rgba(255,90,31,0.7);
+    --line: rgba(243,237,224,0.14);
   }
 
   *{ box-sizing: border-box; }
-
-  html{ background: var(--bg); }
+  html{ background: var(--charcoal); }
 
   body{
     margin: 0;
     min-height: 100svh;
-    background: var(--bg);
-    color: var(--fg);
+    background: var(--charcoal);
+    color: var(--paper);
     font-family: "IBM Plex Sans", system-ui, sans-serif;
-    display: flex;
-    flex-direction: column;
     position: relative;
     overflow-x: hidden;
   }
 
-  /* faint electrode-array dot grid */
+  /* fine film-grain overlay */
   body::before{
     content: "";
     position: fixed;
-    inset: 0;
-    background-image: radial-gradient(circle, rgba(237,239,232,0.05) 1px, transparent 1px);
-    background-size: 28px 28px;
+    inset: -20%;
+    z-index: 5;
     pointer-events: none;
-    z-index: 0;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-size: 220px 220px;
   }
+
+  /* print registration crosses */
+  .reg{
+    position: fixed;
+    width: 13px;
+    height: 13px;
+    z-index: 6;
+    pointer-events: none;
+    opacity: 0.4;
+  }
+  .reg::before, .reg::after{
+    content:"";
+    position: absolute;
+    background: var(--paper);
+  }
+  .reg::before{ top:50%; left:0; width:100%; height:1px; transform:translateY(-50%); }
+  .reg::after{ left:50%; top:0; height:100%; width:1px; transform:translateX(-50%); }
+  .reg.tl{ top: 22px; left: 22px; }
+  .reg.tr{ top: 22px; right: 22px; }
+  .reg.bl{ bottom: 22px; left: 22px; }
+  .reg.br{ bottom: 22px; right: 22px; }
+  @media (max-width: 640px){ .reg{ display: none; } }
 
   .wrap{
     position: relative;
     z-index: 1;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    max-width: 1040px;
+    max-width: 1120px;
     width: 100%;
     margin: 0 auto;
-    padding: 28px 24px 40px;
+    padding: 30px 26px 34px;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
   }
 
   header{
@@ -64,145 +85,188 @@
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    padding-bottom: 10px;
-  }
-
-  .mark{
-    font-family: "Space Grotesk", sans-serif;
-    font-weight: 600;
-    font-size: 15px;
-    letter-spacing: 0.14em;
+    padding-bottom: 26px;
+    border-bottom: 1px solid var(--line);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
+    color: var(--paper-dim);
   }
 
-  .status{
+  header .mark{
+    color: var(--paper);
+    font-weight: 500;
+  }
+
+  header .status{
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-family: "JetBrains Mono", monospace;
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--muted);
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    padding: 6px 12px 6px 10px;
   }
 
-  .status .dot{
+  header .dot{
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--teal);
-    box-shadow: 0 0 0 0 rgba(110,234,208,0.6);
-    animation: pulse 2.4s ease-out infinite;
+    background: var(--orange);
+    box-shadow: 0 0 0 0 rgba(255,90,31,0.6);
+    animation: pulse 2.2s ease-out infinite;
   }
 
   @keyframes pulse{
-    0%   { box-shadow: 0 0 0 0 rgba(110,234,208,0.55); }
-    70%  { box-shadow: 0 0 0 7px rgba(110,234,208,0); }
-    100% { box-shadow: 0 0 0 0 rgba(110,234,208,0); }
+    0%   { box-shadow: 0 0 0 0 rgba(255,90,31,0.55); }
+    70%  { box-shadow: 0 0 0 7px rgba(255,90,31,0); }
+    100% { box-shadow: 0 0 0 0 rgba(255,90,31,0); }
   }
 
   main{
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 40px;
-    padding: 40px 0;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 48px;
+    align-items: center;
+    padding: 48px 0;
+  }
+
+  @media (max-width: 860px){
+    main{ grid-template-columns: 1fr; padding: 36px 0; gap: 40px; }
+    .copy{ order: 1; }
+    .graphic-col{ order: 0; }
+  }
+
+  .eyebrow{
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin: 0 0 18px;
   }
 
   h1{
-    font-family: "Space Grotesk", sans-serif;
+    font-family: "Spectral", serif;
     font-weight: 600;
-    font-size: clamp(34px, 6vw, 60px);
-    line-height: 1.06;
+    font-size: clamp(32px, 4.6vw, 54px);
+    line-height: 1.1;
     letter-spacing: -0.01em;
+    margin: 0 0 22px;
+    max-width: 13ch;
+  }
+
+  .abstract{
+    display: flex;
+    gap: 10px;
+    max-width: 44ch;
+    margin: 0 0 30px;
+  }
+
+  .abstract .label{
+    font-family: "Spectral", serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--paper-dim);
+    white-space: nowrap;
+    padding-top: 1px;
+  }
+
+  .abstract p{
     margin: 0;
-    max-width: 14ch;
-  }
-
-  h1 em{
-    font-style: normal;
-    color: var(--teal);
-  }
-
-  p.lede{
-    font-size: clamp(15px, 1.7vw, 18px);
-    line-height: 1.6;
-    color: var(--muted);
-    max-width: 46ch;
-    margin: 18px 0 0;
-  }
-
-  /* signal / signature graphic */
-  .signal{
-    position: relative;
-    width: 100%;
-    height: 92px;
-    overflow: hidden;
-    mask-image: linear-gradient(90deg, transparent, black 6%, black 94%, transparent);
-    -webkit-mask-image: linear-gradient(90deg, transparent, black 6%, black 94%, transparent);
-  }
-
-  .signal svg{
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 200%;
-  }
-
-  .signal .line-a{
-    animation: scroll 14s linear infinite;
-  }
-  .signal .line-b{
-    animation: scroll 19s linear infinite;
-    opacity: 0.55;
-  }
-
-  @keyframes scroll{
-    from{ transform: translateX(0); }
-    to{ transform: translateX(-50%); }
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--paper-dim);
   }
 
   .contact{
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 14px 22px;
+    gap: 14px 20px;
   }
 
   .contact a.email{
-    font-family: "JetBrains Mono", monospace;
-    font-size: 15px;
-    color: var(--fg);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 14px;
+    color: var(--paper);
     text-decoration: none;
-    border-bottom: 1px solid var(--teal);
+    border-bottom: 1px solid var(--orange);
     padding-bottom: 2px;
   }
 
   .contact a.email:hover,
   .contact a.email:focus-visible{
-    color: var(--teal);
-  }
-
-  .contact .sep{
-    color: var(--line);
+    color: var(--orange);
   }
 
   .contact .note{
-    font-size: 13px;
-    color: var(--muted);
+    font-size: 12px;
+    font-family: "IBM Plex Mono", monospace;
+    color: var(--paper-dim);
+    letter-spacing: 0.02em;
   }
 
-  a:focus-visible,
-  button:focus-visible{
-    outline: 2px solid var(--focus);
+  a:focus-visible{
+    outline: 2px solid var(--paper);
     outline-offset: 3px;
     border-radius: 2px;
   }
+
+  .graphic-col{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .graphic{
+    width: min(100%, 420px);
+    aspect-ratio: 1 / 1;
+    background: var(--charcoal-soft);
+    border: 1px solid var(--line);
+    position: relative;
+  }
+
+  .graphic canvas{
+    width: 100%;
+    height: 100%;
+    display: block;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+
+  .fig-caption{
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    text-align: center;
+  }
+
+  .legend{
+    display: flex;
+    gap: 18px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+  }
+
+  .legend span{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .legend i{
+    width: 7px;
+    height: 7px;
+    display: inline-block;
+  }
+
+  .legend .n i{ background: var(--paper); }
+  .legend .e i{ background: var(--orange); }
 
   footer{
     border-top: 1px solid var(--line);
@@ -211,64 +275,206 @@
     flex-wrap: wrap;
     gap: 8px 18px;
     justify-content: space-between;
-    font-family: "JetBrains Mono", monospace;
-    font-size: 11px;
-    letter-spacing: 0.04em;
-    color: var(--muted);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
   }
 
   @media (prefers-reduced-motion: reduce){
-    .status .dot,
-    .signal .line-a,
-    .signal .line-b{
-      animation: none;
-    }
+    header .dot{ animation: none; }
   }
 </style>
 </head>
 <body>
+  <div class="reg tl" aria-hidden="true"></div>
+  <div class="reg tr" aria-hidden="true"></div>
+  <div class="reg bl" aria-hidden="true"></div>
+  <div class="reg br" aria-hidden="true"></div>
+
   <div class="wrap">
     <header>
       <span class="mark">Onyra Neurotech</span>
-      <span class="status"><span class="dot" aria-hidden="true"></span>Site in progress</span>
+      <span class="status"><span class="dot" aria-hidden="true"></span>More coming soon...</span>
     </header>
 
     <main>
-      <div>
-        <h1>Reading the signal <em>between thought and action.</em></h1>
-        <p class="lede">
-          Onyra Neurotech builds instruments for the next generation of
-          brain&ndash;computer interfaces. We&rsquo;re heads-down in the lab
-          right now &mdash; this site is next.
-        </p>
+      <div class="copy">
+        <p class="eyebrow">Onyra Neurotech</p>
+        <h1>Mapping the interface of mind and machine.</h1>
+        <div class="abstract">
+          <p>
+            Onyra Neurotech builds instruments for the next generation of
+            brain&ndash;computer interfaces. This page is a placeholder while
+            the full site is assembled in the lab.
+          </p>
+        </div>
+        <div class="contact">
+          <a class="email" href="mailto:hello@onyra.dev">hello@onyra.dev</a>
+        </div>
       </div>
 
-      <div class="signal" aria-hidden="true">
-        <svg class="line-a" viewBox="0 0 2400 200" preserveAspectRatio="none">
-          <path d="M0,100 Q20,60 40,100 T80,100 T120,100 L130,20 L140,180 L150,100 T190,100 T230,100 Q250,140 270,100 T310,100 T350,100 L360,30 L370,170 L380,100 T420,100 T460,100 T500,100 T540,100 Q560,70 580,100 T620,100 T660,100 L670,150 L680,60 L690,100 T730,100 T770,100 T810,100 T850,100 T890,100 Q910,130 930,100 T970,100 T1010,100 L1020,40 L1030,160 L1040,100 T1080,100 T1120,100 T1160,100 T1200,100"
-            fill="none" stroke="#6eead0" stroke-width="2" stroke-linecap="round" />
-          <path d="M1200,100 Q1220,60 1240,100 T1280,100 T1320,100 L1330,20 L1340,180 L1350,100 T1390,100 T1430,100 Q1450,140 1470,100 T1510,100 T1550,100 L1560,30 L1570,170 L1580,100 T1620,100 T1660,100 T1700,100 T1740,100 Q1760,70 1780,100 T1820,100 T1860,100 L1870,150 L1880,60 L1890,100 T1930,100 T1970,100 T2010,100 T2050,100 T2090,100 Q2110,130 2130,100 T2170,100 T2210,100 L2220,40 L2230,160 L2240,100 T2280,100 T2320,100 T2360,100 T2400,100"
-            fill="none" stroke="#6eead0" stroke-width="2" stroke-linecap="round" />
-        </svg>
-        <svg class="line-b" viewBox="0 0 2400 200" preserveAspectRatio="none">
-          <path d="M0,110 T60,110 T120,110 Q140,150 160,110 T220,110 T280,110 L290,50 L300,170 L310,110 T370,110 T430,110 T490,110 Q510,80 530,110 T590,110 T650,110 L660,160 L670,70 L680,110 T740,110 T800,110 T860,110 T920,110 Q940,140 960,110 T1020,110 T1080,110 L1090,60 L1100,150 L1110,110 T1170,110 T1200,110"
-            fill="none" stroke="#a99bff" stroke-width="2" stroke-linecap="round" />
-          <path d="M1200,110 T1260,110 T1320,110 Q1340,150 1360,110 T1420,110 T1480,110 L1490,50 L1500,170 L1510,110 T1570,110 T1630,110 T1690,110 Q1710,80 1730,110 T1790,110 T1850,110 L1860,160 L1870,70 L1880,110 T1940,110 T2000,110 T2060,110 T2120,110 Q2140,140 2160,110 T2220,110 T2280,110 L2290,60 L2300,150 L2310,110 T2370,110 T2400,110"
-            fill="none" stroke="#a99bff" stroke-width="2" stroke-linecap="round" />
-        </svg>
-      </div>
-
-      <div class="contact">
-        <a class="email" href="mailto:hello@onyra.dev">hello@onyra.dev</a>
-        <span class="sep">/</span>
-        <span class="note">We&rsquo;ll be in touch when there&rsquo;s more to see.</span>
+      <div class="graphic-col">
+        <div class="graphic">
+          <canvas id="net" width="440" height="440" role="img" aria-label="Animated diagram of a rotating dithered neural network, decorative"></canvas>
+        </div>
       </div>
     </main>
 
     <footer>
-      <span>&copy; 2026 Onyra Neurotech</span>
+      <span>Ver/002</span>
       <span>onyra.dev</span>
+      <span>&copy; 2026 Onyra Neurotech</span>
     </footer>
   </div>
+
+<script>
+(function(){
+  const canvas = document.getElementById('net');
+  const ctx = canvas.getContext('2d');
+  const figcaption = document.getElementById('figcaption');
+  const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const BUF = 110;      // dither grid resolution
+  const CELL = canvas.width / BUF; // px per cell (4)
+  const off = document.createElement('canvas');
+  off.width = BUF; off.height = BUF;
+  const octx = off.getContext('2d');
+
+  // Bayer 4x4 ordered-dither matrix
+  const BAYER = [
+    [ 0, 8, 2,10],
+    [12, 4,14, 6],
+    [ 3,11, 1, 9],
+    [15, 7,13, 5]
+  ];
+
+  // --- build organic point cloud (brain / connectome hybrid) ---
+  const N = 90;
+  const ga = Math.PI * (3 - Math.sqrt(5));
+  const points = [];
+  for (let i = 0; i < N; i++){
+    const yv = 1 - (i/(N-1)) * 2;
+    const rY = Math.sqrt(Math.max(0, 1 - yv*yv));
+    const theta = ga * i;
+    let x = Math.cos(theta) * rY;
+    let z = Math.sin(theta) * rY;
+    let y = yv;
+    const lump = 1
+      + 0.16 * Math.sin(3*theta + y*4.0)
+      + 0.09 * Math.sin(7*theta - y*2.3)
+      + 0.05 * Math.sin(11*theta + y*6.1);
+    x *= lump; z *= lump; y *= lump * 1.18;
+    points.push({ bx:x, by:y, bz:z, x:0, y:0, z:0, sx:0, sy:0, depth:0 });
+  }
+
+  // k-nearest-neighbour edges (k=3) computed once on base coordinates
+  const edgeSet = new Set();
+  const edges = [];
+  const k = 3;
+  for (let i = 0; i < N; i++){
+    const dists = [];
+    for (let j = 0; j < N; j++){
+      if (i === j) continue;
+      const dx = points[i].bx-points[j].bx, dy = points[i].by-points[j].by, dz = points[i].bz-points[j].bz;
+      dists.push([j, dx*dx+dy*dy+dz*dz]);
+    }
+    dists.sort((a,b) => a[1]-b[1]);
+    for (let n = 0; n < k; n++){
+      const j = dists[n][0];
+      const key = i < j ? i+'_'+j : j+'_'+i;
+      if (!edgeSet.has(key)){ edgeSet.add(key); edges.push([i,j]); }
+    }
+  }
+
+  const focal = 2.6, camDist = 3.4, viewScale = 38, cx = BUF/2, cy = BUF/2;
+
+  function render(angleY, angleX, showAngleDeg){
+    // rotate + project
+    let zMin = Infinity, zMax = -Infinity;
+    for (const p of points){
+      // rotate X
+      let y1 = p.by*Math.cos(angleX) - p.bz*Math.sin(angleX);
+      let z1 = p.by*Math.sin(angleX) + p.bz*Math.cos(angleX);
+      let x1 = p.bx;
+      // rotate Y
+      let x2 = x1*Math.cos(angleY) + z1*Math.sin(angleY);
+      let z2 = -x1*Math.sin(angleY) + z1*Math.cos(angleY);
+      p.x = x2; p.y = y1; p.z = z2;
+      if (z2 < zMin) zMin = z2;
+      if (z2 > zMax) zMax = z2;
+      const scale = focal / (z2 + camDist);
+      p.sx = cx + x2*scale*viewScale;
+      p.sy = cy + y1*scale*viewScale;
+    }
+    const zRange = (zMax - zMin) || 1;
+    for (const p of points) p.depth = (p.z - zMin) / zRange;
+
+    octx.fillStyle = '#000';
+    octx.fillRect(0, 0, BUF, BUF);
+
+    // edges -> green channel
+    octx.strokeStyle = '#00ff00';
+    octx.lineWidth = 1;
+    for (const [i,j] of edges){
+      const a = points[i], b = points[j];
+      const d = (a.depth + b.depth) / 2;
+      octx.globalAlpha = 0.18 + 0.55*d;
+      octx.beginPath();
+      octx.moveTo(a.sx, a.sy);
+      octx.lineTo(b.sx, b.sy);
+      octx.stroke();
+    }
+
+    // nodes -> red channel
+    octx.fillStyle = '#ff0000';
+    for (const p of points){
+      octx.globalAlpha = 0.35 + 0.65*p.depth;
+      const r = 0.8 + 2.0*p.depth;
+      octx.beginPath();
+      octx.arc(p.sx, p.sy, r, 0, Math.PI*2);
+      octx.fill();
+    }
+    octx.globalAlpha = 1;
+
+    const img = octx.getImageData(0, 0, BUF, BUF).data;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let y = 0; y < BUF; y++){
+      const bRow = BAYER[y % 4];
+      for (let x = 0; x < BUF; x++){
+        const idx = (y*BUF + x) * 4;
+        const R = img[idx], G = img[idx+1];
+        if (R < 4 && G < 4) continue;
+        const threshold = (bRow[x % 4] + 0.5) / 16 * 255;
+        if (R > threshold){
+          ctx.fillStyle = '#f3ede0';
+          ctx.fillRect(x*CELL, y*CELL, CELL, CELL);
+        } else if (G > threshold * 0.92){
+          ctx.fillStyle = '#ff5a1f';
+          ctx.fillRect(x*CELL, y*CELL, CELL, CELL);
+        }
+      }
+    }
+  }
+
+  if (reducedMotion){
+    render(0.6, 0.15, (0.6*180/Math.PI) % 360);
+  } else {
+    let angleY = 0, tPrev = 0;
+    function frame(t){
+      requestAnimationFrame(frame);
+      if (t - tPrev < 42) return;
+      tPrev = t;
+      angleY += 0.012;
+      const angleX = 0.22 * Math.sin(t * 0.00045);
+      const deg = (angleY * 180 / Math.PI) % 360;
+      render(angleY, angleX, deg);
+    }
+    requestAnimationFrame(frame);
+  }
+})();
+</script>
 </body>
 </html>
