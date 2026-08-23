@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Onyra Neurotech</title>
+<meta name="description" content="Onyra Neurotech — instruments for the interface of mind and machine. Site under construction." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #10131a;
+    --bg-soft: #161b25;
+    --fg: #edefe8;
+    --muted: #7c8598;
+    --line: rgba(237,239,232,0.08);
+    --teal: #6eead0;
+    --violet: #a99bff;
+    --focus: #eef0e9;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html{ background: var(--bg); }
+
+  body{
+    margin: 0;
+    min-height: 100svh;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* faint electrode-array dot grid */
+  body::before{
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(237,239,232,0.05) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap{
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 1040px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 28px 24px 40px;
+  }
+
+  header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 10px;
+  }
+
+  .mark{
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .status{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 12px 6px 10px;
+  }
+
+  .status .dot{
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--teal);
+    box-shadow: 0 0 0 0 rgba(110,234,208,0.6);
+    animation: pulse 2.4s ease-out infinite;
+  }
+
+  @keyframes pulse{
+    0%   { box-shadow: 0 0 0 0 rgba(110,234,208,0.55); }
+    70%  { box-shadow: 0 0 0 7px rgba(110,234,208,0); }
+    100% { box-shadow: 0 0 0 0 rgba(110,234,208,0); }
+  }
+
+  main{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+    padding: 40px 0;
+  }
+
+  h1{
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 600;
+    font-size: clamp(34px, 6vw, 60px);
+    line-height: 1.06;
+    letter-spacing: -0.01em;
+    margin: 0;
+    max-width: 14ch;
+  }
+
+  h1 em{
+    font-style: normal;
+    color: var(--teal);
+  }
+
+  p.lede{
+    font-size: clamp(15px, 1.7vw, 18px);
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 46ch;
+    margin: 18px 0 0;
+  }
+
+  /* signal / signature graphic */
+  .signal{
+    position: relative;
+    width: 100%;
+    height: 92px;
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, black 6%, black 94%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 6%, black 94%, transparent);
+  }
+
+  .signal svg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 200%;
+  }
+
+  .signal .line-a{
+    animation: scroll 14s linear infinite;
+  }
+  .signal .line-b{
+    animation: scroll 19s linear infinite;
+    opacity: 0.55;
+  }
+
+  @keyframes scroll{
+    from{ transform: translateX(0); }
+    to{ transform: translateX(-50%); }
+  }
+
+  .contact{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 22px;
+  }
+
+  .contact a.email{
+    font-family: "JetBrains Mono", monospace;
+    font-size: 15px;
+    color: var(--fg);
+    text-decoration: none;
+    border-bottom: 1px solid var(--teal);
+    padding-bottom: 2px;
+  }
+
+  .contact a.email:hover,
+  .contact a.email:focus-visible{
+    color: var(--teal);
+  }
+
+  .contact .sep{
+    color: var(--line);
+  }
+
+  .contact .note{
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  a:focus-visible,
+  button:focus-visible{
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  footer{
+    border-top: 1px solid var(--line);
+    padding-top: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    justify-content: space-between;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .status .dot,
+    .signal .line-a,
+    .signal .line-b{
+      animation: none;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="mark">Onyra Neurotech</span>
+      <span class="status"><span class="dot" aria-hidden="true"></span>Site in progress</span>
+    </header>
+
+    <main>
+      <div>
+        <h1>Reading the signal <em>between thought and action.</em></h1>
+        <p class="lede">
+          Onyra Neurotech builds instruments for the next generation of
+          brain&ndash;computer interfaces. We&rsquo;re heads-down in the lab
+          right now &mdash; this site is next.
+        </p>
+      </div>
+
+      <div class="signal" aria-hidden="true">
+        <svg class="line-a" viewBox="0 0 2400 200" preserveAspectRatio="none">
+          <path d="M0,100 Q20,60 40,100 T80,100 T120,100 L130,20 L140,180 L150,100 T190,100 T230,100 Q250,140 270,100 T310,100 T350,100 L360,30 L370,170 L380,100 T420,100 T460,100 T500,100 T540,100 Q560,70 580,100 T620,100 T660,100 L670,150 L680,60 L690,100 T730,100 T770,100 T810,100 T850,100 T890,100 Q910,130 930,100 T970,100 T1010,100 L1020,40 L1030,160 L1040,100 T1080,100 T1120,100 T1160,100 T1200,100"
+            fill="none" stroke="#6eead0" stroke-width="2" stroke-linecap="round" />
+          <path d="M1200,100 Q1220,60 1240,100 T1280,100 T1320,100 L1330,20 L1340,180 L1350,100 T1390,100 T1430,100 Q1450,140 1470,100 T1510,100 T1550,100 L1560,30 L1570,170 L1580,100 T1620,100 T1660,100 T1700,100 T1740,100 Q1760,70 1780,100 T1820,100 T1860,100 L1870,150 L1880,60 L1890,100 T1930,100 T1970,100 T2010,100 T2050,100 T2090,100 Q2110,130 2130,100 T2170,100 T2210,100 L2220,40 L2230,160 L2240,100 T2280,100 T2320,100 T2360,100 T2400,100"
+            fill="none" stroke="#6eead0" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <svg class="line-b" viewBox="0 0 2400 200" preserveAspectRatio="none">
+          <path d="M0,110 T60,110 T120,110 Q140,150 160,110 T220,110 T280,110 L290,50 L300,170 L310,110 T370,110 T430,110 T490,110 Q510,80 530,110 T590,110 T650,110 L660,160 L670,70 L680,110 T740,110 T800,110 T860,110 T920,110 Q940,140 960,110 T1020,110 T1080,110 L1090,60 L1100,150 L1110,110 T1170,110 T1200,110"
+            fill="none" stroke="#a99bff" stroke-width="2" stroke-linecap="round" />
+          <path d="M1200,110 T1260,110 T1320,110 Q1340,150 1360,110 T1420,110 T1480,110 L1490,50 L1500,170 L1510,110 T1570,110 T1630,110 T1690,110 Q1710,80 1730,110 T1790,110 T1850,110 L1860,160 L1870,70 L1880,110 T1940,110 T2000,110 T2060,110 T2120,110 Q2140,140 2160,110 T2220,110 T2280,110 L2290,60 L2300,150 L2310,110 T2370,110 T2400,110"
+            fill="none" stroke="#a99bff" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </div>
+
+      <div class="contact">
+        <a class="email" href="mailto:hello@onyra.dev">hello@onyra.dev</a>
+        <span class="sep">/</span>
+        <span class="note">We&rsquo;ll be in touch when there&rsquo;s more to see.</span>
+      </div>
+    </main>
+
+    <footer>
+      <span>&copy; 2026 Onyra Neurotech</span>
+      <span>onyra.dev</span>
+    </footer>
+  </div>
+</body>
+</html>
